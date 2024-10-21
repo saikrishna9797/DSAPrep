@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool check(vector<int>& nums) {
+        int indx,n = nums.size();
+        int noPoints = 0;
+
+        //no of points
+        for(int i=0;i<n-1;i++)
+        {
+            if(nums[i]>nums[i+1])
+            {
+                indx = i+1;
+                noPoints++;
+            }
+        }
+
+        if(noPoints>1)return false;
+        if(noPoints == 0)return true;
+
+        //after check point if the elements are in ascending or not
+
+        while(indx<n-1)
+        {
+            if(nums[indx]>nums[indx+1])return false;
+            indx++;
+        }
+
+        //if first element is always greater than or equal to last element
+
+        if(nums[0]<nums[n-1])return false;
+
+        return true;
+    }
+};
