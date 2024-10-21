@@ -1,0 +1,68 @@
+
+
+
+----------------------------------------
+            GENERAL METOHD
+----------------------------------------
+
+
+// User function template for C++
+class Solution {
+  public:
+    // Function returns the second
+    // largest elements
+    int getSecondLargest(vector<int> &arr) {
+        // Code Here
+        int ans = -1;
+        int mx = INT_MIN;
+        
+        for(auto ele:arr)
+        {
+            mx = max(mx,ele);
+        }
+        
+        for(auto ele:arr)
+        {
+            if(ele != mx)
+            {
+                ans = max(ans,ele);
+            }
+        }
+        return ans;
+    }
+};
+
+
+
+---------------------------------------------------------------------------
+
+                      ADVANCE METHOD
+---------------------------------------------------------------------------
+
+
+// User function template for C++
+class Solution {
+  public:
+    // Function returns the second
+    // largest elements
+    int getSecondLargest(vector<int> &arr) {
+        // Code Here
+        int ans = -1;
+        int largest = -1;
+        int seconLargest = INT_MIN;
+        
+        for(auto ele:arr)
+        {
+            if(ele>largest)
+            {
+                seconLargest = largest;
+                largest = ele;
+            }
+            else if(ele<largest && ele>seconLargest)
+            {
+                seconLargest = ele;
+            }
+        }
+        return seconLargest;
+    }
+};
