@@ -1,0 +1,35 @@
+class Solution {
+    
+    long long findingGCD(long long A,long long B)
+    {
+        if(A == 0)return B;
+        else if(B == 0)return A;
+        
+        long long mn = min(A,B);
+        long long mx = max(A,B);
+        
+        return findingGCD(mx-mn,mn);
+    }
+    
+  public:
+    vector<long long> lcmAndGcd(long long A , long long B) {
+        // code here
+     ________________________
+     |   //formula for LCM  |
+     |  //lcm = a*b/gcd     |
+     ________________________
+        long long gcd;
+        
+        gcd = findingGCD(A,B);
+        
+        
+        
+        long long lcm = (A*B)/gcd;
+        
+        vector<long long>ans;
+        
+        ans.push_back(lcm);
+        ans.push_back(gcd);
+        return ans;
+    }
+};
