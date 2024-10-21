@@ -1,0 +1,19 @@
+//using dp
+
+class Solution {
+public:
+    int fib(int n) {
+        int fib1 = 0,fib2 = 1;
+        int ans;
+        if(n == 0)return 0;
+        else if(n == 1)return 1;
+        n -= 1;
+        while(n--)
+        {
+            ans = fib1+fib2;
+            fib1 = fib2;
+            fib2 = ans;
+        }
+        return ans;
+    }
+};
