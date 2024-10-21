@@ -1,0 +1,18 @@
+  class Solution{
+public:
+    int evenlyDivides(int N){
+        //code here
+        int temp = N;
+        
+        int ans = 0;
+        
+        while(temp)
+        {
+            int divisor = temp%10;
+            temp = temp/10;
+            
+            if(divisor && N%divisor == 0)ans += 1;
+        }
+        return ans;
+    }
+};

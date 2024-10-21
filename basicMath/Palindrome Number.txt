@@ -1,0 +1,49 @@
+//  1.using stack
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0)return false;
+        stack<int>st;
+        int temp = x;
+        while(temp)
+        {
+            st.push(temp%10);
+            temp = temp/10;
+        }
+
+        while(!st.empty())
+        {
+            if(st.top() != x%10)return false;
+            st.pop();
+            x = x/10;
+        }
+
+        return true;
+    }
+};
+
+
+
+-------------------------------------------------------------------------------
+// O(1)space code
+
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if (x < 0)
+            return false;
+        
+        int temp = x;
+        long revNum = 0;
+        while(temp)
+        {
+            revNum = revNum*10 + temp%10;
+            temp = temp/10;
+        }
+
+        if(revNum == x)return true;
+
+        return false;
+    }
+};
