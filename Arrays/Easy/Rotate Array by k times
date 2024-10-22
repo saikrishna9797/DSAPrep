@@ -1,0 +1,41 @@
+class Solution {
+    void reverseArray(vector<int> &nums,int start,int end)
+    {
+        while(start<end)
+        {
+            int temp = nums[end];
+            nums[end] = nums[start];
+            nums[start] = temp;
+            start += 1;
+            end -= 1;
+        }
+        return;
+    }
+public:
+    void rotate(vector<int>& nums, int k) {
+
+        // One line of thought is based on reversing the array (or parts of it) to obtain the desired result. Think about how reversal might potentially help us out by using an example.
+
+        //here where we use functions
+
+        int n = nums.size();
+        int start = 0,end = n-1;
+
+        // step - 1
+        reverseArray(nums,start,end);
+
+        k = k%n;
+        
+        reverseArray(nums,0,k-1);
+
+
+        if(k<n)
+        {
+            
+            reverseArray(nums,k,n-1);
+        }
+
+        return;
+
+    }
+};
