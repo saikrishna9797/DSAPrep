@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int lenOfLongSubarr(int A[], int N, int K) {
+        int ans = 0;
+        int preSum = 0;
+        int start = 0;
+
+        for (int end = 0; end < N; end++) {
+            preSum += A[end]; // Expand the window
+
+            // While the sum exceeds K, shrink from the left
+            while (preSum > K && start <= end) {
+                preSum -= A[start];
+                start++;
+            }
+
+            // Check if we found a valid subarray
+            if (preSum == K) {
+                ans = max(ans, end - start + 1);
+            }
+        }
+
+        return ans;
+    }
+};
