@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int ans = 0;
+        int n = nums.size();
+
+        int indx = 0;
+
+        while(indx<n)
+        {
+            int ele = nums[indx];
+            // int tempIndx = indx;
+            while(indx<n && nums[indx] == ele)indx += 1;
+            ans += 1;
+        }
+
+        indx = 0;
+        int nxtIndx = 0;
+
+        while(indx<n)
+        {
+            int ele = nums[indx];
+            while(indx<n && nums[indx] == ele)indx+=1;
+
+            if(indx<n)
+            {
+                nums[++nxtIndx] = nums[indx];
+            }
+        }
+
+        return ans;
+    }
+};
