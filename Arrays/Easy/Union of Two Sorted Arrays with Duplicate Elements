@@ -1,0 +1,87 @@
+class Solution {
+    void fun(vector<int> &ans,vector<int> &a,int &indx1)
+    {
+        if(!ans.empty())
+            {
+                    if(ans.back()<a[indx1])
+                    {
+                        ans.push_back(a[indx1]);
+                        indx1 += 1;
+                    }
+                    else
+                    {
+                        indx1 += 1;
+                    }
+            }
+        else
+                {
+                    ans.push_back(a[indx1]);
+                    indx1 += 1;
+                }
+            return;
+    }
+  public:
+    // a,b : the arrays
+    // Function to return a list containing the union of the two arrays.
+    vector<int> findUnion(vector<int> &a, vector<int> &b) {
+        // Your code here
+        // return vector with correct order of elements
+        vector<int>ans;
+        int n = a.size(), m = b.size();
+        
+        int indx1 = 0,indx2 = 0;
+        
+        while(indx1<n && indx2<m)
+        {
+            if(a[indx1] == b[indx2])
+            {
+                if(!ans.empty())
+                {
+                    if(ans.back()<a[indx1])
+                    {
+                        ans.push_back(a[indx1]);
+                        
+                    }
+                    indx1 += 1;
+                    indx2 += 1;
+                }
+                else
+                {
+                        ans.push_back(a[indx1]);
+                        indx1 += 1;
+                        indx2 += 1;
+                }
+            }
+            else if(a[indx1]<b[indx2])
+            {
+                fun(ans,a,indx1);
+            }
+            else if(a[indx1]>b[indx2])
+            {
+                fun(ans,b,indx2);
+                
+            }
+        }
+        
+        while(indx1<n)
+        {
+            if(ans.empty())ans.push_back(a[indx1]);
+            else
+            if(ans.back()<a[indx1])
+            ans.push_back(a[indx1]);
+            indx1 += 1;
+        }
+        
+        while(indx2<m)
+        {
+            if(ans.empty())ans.push_back(b[indx2]);
+            else
+            if(ans.back()<b[indx2])
+            ans.push_back(b[indx2]);
+            indx2 += 1;
+        }
+        
+        return ans;
+        
+    }
+};
