@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        //using hashing
+
+        map<int,int>mp;
+        int n = nums.size();
+        for(int i=0;i<n;i++)
+        {
+            mp[nums[i]] = i;
+        }
+        int indx1,indx2;
+        vector<int>ans;
+
+        for(int i=0;i<n;i++)
+        {
+            int required = target - nums[i];
+
+            if(mp.find(required) != mp.end() && mp[required] != i)
+            {
+
+                indx1 = i;
+                indx2 = mp[required];
+                break;
+            }
+        }
+
+        int mn = min(indx1,indx2);
+        int mx = max(indx1,indx2);
+        ans.push_back(mn);
+        ans.push_back(mx);
+        return ans;
+    }
+};
