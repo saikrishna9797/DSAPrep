@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        //for true or false only
+        sort(nums.begin(),nums.end());
+
+        int n = nums.size();
+        int indx1 = 0,indx2 = n-1;
+
+        while(indx1<indx2)
+        {
+            int sum = nums[indx1]+nums[indx2];
+            if(sum == target)return true;
+            else if(sum>target)indx2 -= 1;
+            else indx1 += 1;
+        }
+
+        return true;
+    }
+};
