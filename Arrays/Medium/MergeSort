@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void merge(int (&arr)[],int start,int end,int mid)
+{
+    int temp[end-start+1];
+    int indx = 0;
+    // cout<<"hi";
+    int indx1 = start,indx2 = mid+1;
+    
+    while(indx1<=mid && indx2<=end)
+    {
+        if(arr[indx1]>arr[indx2])
+        {
+            temp[indx++] = arr[indx2++];
+        }
+        else
+        {
+            temp[indx++] = arr[indx1++];
+        }
+    }
+    
+    while(indx1<=mid)
+    {
+        temp[indx++] = arr[indx1++];
+    }
+    
+    while(indx2<=end)
+    {
+        temp[indx++] = arr[indx2++];
+    }
+    
+    indx = 0;
+    int n = end-start+1;
+    while(indx<n)
+    {
+        // cout<<temp[indx]<<" ";
+        arr[start++] = temp[indx++];
+    }
+    
+    return;
+    
+}
+
+
+void divide(int (&arr)[],int start,int end)
+{
+     if(start == end)
+    return;
+    int mid = (start+end)/2;
+   
+    // cout<<"hi";
+    divide(arr,start,mid);
+    
+    divide(arr,mid+1,end);
+    merge(arr,start,end,mid);
+    return;
+}
+
+int main()
+{
+    int arr[20] = {6,0,9,3,5,7,0,9,3,7,8,9,5,7,8,9,3,2,6,8};
+    int start = 0,end = 19;
+    
+    divide(arr,start,end);
+    
+    for(int i=0;i<20;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+    return 0;
+}
