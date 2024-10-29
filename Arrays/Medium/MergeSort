@@ -5,7 +5,7 @@ void merge(int (&arr)[],int start,int end,int mid)
 {
     int temp[end-start+1];
     int indx = 0;
-    // cout<<"hi";
+
     int indx1 = start,indx2 = mid+1;
     
     while(indx1<=mid && indx2<=end)
