@@ -1,0 +1,29 @@
+class Solution {
+    int solve(vector<int> &nums,int sum,int indx,vector<vector<int>> &dp)
+    {
+        if(sum == 0)return 1;
+        if(indx == nums.size())return 0;
+        if(dp[indx][sum] != -1)return dp[indx][sum];
+        if(sum>=nums[indx])
+        return dp[indx][sum] = (solve(nums,sum,indx+1,dp) || solve(nums,sum-nums[indx],indx+1,dp));
+
+        return dp[indx][sum] = solve(nums,sum,indx+1,dp);
+    }
+public:
+    bool canPartition(vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+
+        for(auto ele:nums)sum += ele;
+
+        if(sum%2 == 1)return false;
+
+        sum = sum/2;
+
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        int indx = 0;
+
+        dp[n][sum] = solve(nums,sum,indx,dp);
+        return dp[n][sum];
+    }
+};
