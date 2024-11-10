@@ -1,0 +1,26 @@
+// User function template for C++
+
+class Solution {
+    bool solve(vector<int>& arr, int sum,int indx,vector<vector<int>> &dp)
+    {
+        if(sum == 0)return true;
+        if(indx == arr.size())return false;
+        
+        if(dp[indx][sum] != -1)dp[indx][sum];
+        if(sum>=arr[indx])
+        {
+            return dp[indx][sum] = (solve(arr,sum-arr[indx],indx+1,dp) || solve(arr,sum,indx+1,dp));
+        }
+        
+        return dp[indx][sum] = solve(arr,sum,indx+1,dp);
+    }
+  public:
+    bool isSubsetSum(vector<int>& arr, int sum) {
+        // code here
+        int n = arr.size();
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        int indx = 0;
+        dp[n][sum] = solve(arr,sum,indx,dp);
+        return dp[n][sum];
+    }
+};
