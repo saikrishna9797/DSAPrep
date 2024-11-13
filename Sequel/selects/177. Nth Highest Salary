@@ -1,0 +1,20 @@
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+       select salary from 
+         (select salary ,dense_rank() 
+          over(order by salary desc) as r from Employee)
+          as tempTable where r = N
+          limit 1
+  );
+END;
+
+*************************************************
+*      why limit is used?                       *
+*                                               *
+*      if any salary is same                    *
+*      and its rank is N                        *
+*      then it will return more than one        *
+*      thats why we limit it to 1               *
+*                                               *
+**************************************************
