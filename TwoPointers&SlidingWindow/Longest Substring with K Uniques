@@ -1,0 +1,30 @@
+// User function template for C++
+
+class Solution {
+  public:
+    int longestKSubstr(string &s, int k) {
+        // your code here
+        int siz = s.size();
+        map<char,int>mp;
+        int ans = -1;
+        
+        int p1 = 0,p2 = 0;
+        
+        while(p1<siz)
+        {
+            mp[s[p1]]++;
+            if(mp.size() >k)
+            {
+                while(p2 < siz && mp.size() > k)
+                {
+                    mp[s[p2]] -= 1;
+                    if(mp[s[p2]] == 0)mp.erase(s[p2]);
+                    p2 += 1;
+                }
+            }
+            if(mp.size() == k)ans = max(ans,p1-p2+1);
+            p1 += 1;
+        }
+        return ans;
+    }
+};
