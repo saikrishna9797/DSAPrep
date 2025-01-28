@@ -1,0 +1,60 @@
+
+void dfs(vector<vector<int>>& grid,vector<vector<int>>& vist,int row,int col,int &peri)
+{
+    int arr1[4] = {-1,0,1,0};
+    int arr2[4] = {0,1,0,-1};
+    vist[row][col] = 1;
+
+    int n = grid.size();
+    int m = grid[0].size();
+
+    for(int i=0;i<4;i++)
+    {
+        int r = row + arr1[i];
+        int c = col + arr2[i];
+
+        if(r>=0 && r<n && c>=0 && c<m && vist[r][c] != 1 && grid[r][c] == 1)
+        {
+            peri += 1;
+            vist[r][c] = 1;
+            dfs(grid,vist,r,c,peri);
+        }
+    }
+    return;
+}
+
+class Solution {
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+
+        queue<pair<int,int>>q;
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j] == 1)q.push({i,j});
+            }
+        }
+
+        int ans = 0;
+        vector<vector<int>>vist(n,vector<int>(m,0));
+
+        while(!q.empty())
+        {
+            int peri = 1;
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
+            // vist[row][col] = 1;
+            if(vist[row][col] != 1)
+            dfs(grid,vist,row,col,peri);
+            // cout<<peri<<' ';
+            ans = max(ans,peri);
+        }
+
+        return ans;
+    }
+};
