@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>>adj(n);
+        if(n == 1)return true;
+        if(source  == destination )return true;
+
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+
+        queue<int>q;
+
+        q.push(source);
+
+        vector<int>vist(n,0);
+
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            vist[node] = 1;
+            for(int i=0;i<adj[node].size();i++)
+            {
+                if(vist[adj[node][i]] != 1)
+                {
+                    if(adj[node][i] == destination)return true;
+                    vist[adj[node][i]] = 1;
+                    q.push(adj[node][i]);
+                }
+            }
+        }
+
+        return false;
+    }
+};
