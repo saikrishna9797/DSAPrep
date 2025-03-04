@@ -1,0 +1,47 @@
+
+void dfs(vector<vector<int>>& image,vector<vector<int>>& vist,
+int sr,int sc,int newColor,int ini)
+{
+    
+    int n = image.size();
+    int m = image[0].size();
+    if(vist[sr][sc] != 1)
+    {
+        vist[sr][sc] = 1;
+        int arr1[4] = {-1,0,1,0};
+        int arr2[4] = {0,1,0,-1};
+        
+        for(int i=0;i<4;i++)
+        {
+            int nr = sr + arr1[i];
+            int nc = sc + arr2[i];
+            
+            if(nr>=0 && nc>=0 && nr<n && nc<m && vist[nr][nc] != 1
+            && image[nr][nc] == ini)
+            {
+                image[nr][nc] = newColor;
+                dfs(image,vist,nr,nc,newColor,ini);
+            }
+        }
+        
+    }
+}
+
+class Solution {
+  public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc,
+                                  int newColor) {
+        // Code here
+        
+        int n = image.size();
+        int m = image[0].size();
+        vector<vector<int>>vist(n,vector<int>(m,0));
+        int ini = image[sr][sc];
+        
+        image[sr][sc] = newColor;
+        
+        dfs(image,vist,sr,sc,newColor,ini);
+        
+        return image;
+    }
+};
