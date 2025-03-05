@@ -1,0 +1,40 @@
+
+bool dfs(vector<vector<int>>& adj,vector<int> &vist,int node,int par)
+{
+    vist[node] = 1;
+    
+    for(auto ele:adj[node])
+    {
+        if(vist[ele] == 1 && ele != par)return true;
+        else if(vist[ele] == 0)
+        {
+            if(dfs(adj,vist,ele,node))return true;
+        }
+    }
+    
+    return false;
+}
+
+class Solution {
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(vector<vector<int>>& adj) {
+        // Code here
+        int n = adj.size();
+        
+        vector<int>vist(n,0);
+        
+        for(int i=0;i<n;i++)
+        {
+            if(vist[i] != 1)
+            {
+                if(dfs(adj,vist,i,-1))return true;   
+            }
+        }
+        
+        return false;
+        
+        
+        
+    }
+};
