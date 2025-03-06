@@ -1,0 +1,80 @@
+
+void dfs(vector<vector<char>>& mat,vector<vector<bool>>& vist,
+vector<vector<char>>& ans,int r,int c)
+{
+    int n = mat.size();
+    int m = mat[0].size();
+    
+        vist[r][c] = true;
+        ans[r][c] = 'O';
+        
+        int arr1[4] = {-1,0,1,0};
+        int arr2[4] = {0,1,0,-1};
+        
+        for(int i=0;i,4;i++)
+        {
+            int nr = r + arr1[i];
+            int nc = c + arr2[i];
+            
+            if(nr>=0 && nc>=0 && nr<n && nc<m && 
+            !vist[nr][nc] && mat[nr][nc] == 'O')
+            {
+                dfs(mat,vist,ans,nr,nc);
+            }
+        }
+}
+
+
+class Solution {
+  public:
+    vector<vector<char>> fill(vector<vector<char>>& mat) {
+        // code here
+        int n = mat.size();
+        int m = mat[0].size();
+        
+        queue<pair<int,int>>q;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(i == 0 && mat[i][j] == 'O')
+                {
+                    q.push({i,j});
+                }
+                else if(i == n-1 && mat[i][j] == 'O')
+                {
+                    q.push({i,j});
+                }
+                else if(j == 0 && mat[i][j] == 'O')
+                {
+                    q.push({i,j});
+                }
+                else if(j == m-1 && mat[i][j] == 'O')
+                {
+                    q.push({i,j});
+                }
+            }
+        }
+        
+        vector<vector<char>>ans(n,vector<char>(m,'X'));
+        
+        
+        vector<vector<bool>>vist(n,vector<bool>(m,false));
+        
+        while(!q.empty())
+        {
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            
+            if(!vist[r][c])
+            dfs(mat,vist,ans,r,c);
+        }
+        
+        return ans;
+        
+        
+        
+    }
+};
