@@ -1,0 +1,65 @@
+
+// User function Template for C++
+
+class Solution {
+  public:
+    int numberOfEnclaves(vector<vector<int>> &grid) {
+        // Code here
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        vector<vector<bool>>vist(n,vector<bool>(m,false));
+        
+        queue<pair<int,int>>q;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j = 0;j<m;j++)
+            {
+                if((i == 0 || i == n-1 || j == 0 || j == m-1 )&& 
+                grid[i][j] == 1)q.push({i,j});
+            }
+        }
+        
+        int ans = 0;
+        
+        while(!q.empty())
+        {
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            
+            if(!vist[r][c])
+            {
+                vist[r][c] = true;
+                int arr1[4] = {-1,0,1,0};
+                int arr2[4] = {0,1,0,-1};
+                
+                for(int i=0;i<4;i++)
+                {
+                    int nr = r + arr1[i];
+                    int nc = c + arr2[i];
+                    
+                    if(nr>=0 && nc>=0 && nr<n && nc<m &&
+                    grid[nr][nc] == 1 && !vist[nr][nc])
+                    {
+                        q.push({nr,nc});
+                    }
+                }
+            }
+        }
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j = 0;j<m;j++)
+            {
+                // cout<<vist[i][j]<<" ";
+                if(grid[i][j] == 1 && !vist[i][j])ans += 1;
+            }
+            // cout<<endl;
+        }
+        
+        return ans;
+        
+    }
+};
