@@ -1,0 +1,73 @@
+
+// User function Template for C++
+
+
+void dfs(vector<vector<int>>& grid,vector<vector<bool>>& vist,
+vector<pair<int,int>> &indxs,int r,int c,int sI,int sJ)
+{
+    vist[r][c] = true;
+    int n = grid.size();
+    int m = grid[0].size();
+    indxs.push_back({r-sI,c-sJ});
+    
+    int arr1[4] = {-1,0,1,0};
+    int arr2[4] = {0,1,0,-1};
+    
+    for(int i=0;i<4;i++)
+    {
+        int nr = r + arr1[i];
+        int nc = c + arr2[i];
+        
+        if(nr>=0 && nc>=0 && nr<n && nc<m && !vist[nr][nc] &&
+        grid[nr][nc] == 1)
+        {   
+            dfs(grid,vist,indxs,nr,nc,sI,sJ);
+        }
+    }
+}
+
+
+class Solution {
+  public:
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        queue<pair<int,int>>q;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j] == 1)q.push({i,j});
+            }
+        }
+        
+        vector<vector<bool>>vist(n,vector<bool>(m,false));
+        set<vector<pair<int,int>>>st;
+        
+        
+        while(!q.empty())
+        {
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            
+            vector<pair<int,int>>indxs;
+            
+            if(!vist[r][c])
+            {
+                dfs(grid,vist,indxs,r,c,r,c);
+                
+                
+                st.insert(indxs);
+                
+            }
+            
+        }
+        int ans = st.size();
+       
+        return ans;
+    }
+};
