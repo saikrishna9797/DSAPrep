@@ -1,0 +1,44 @@
+
+void dfs(vector<vector<int>>& adj,vector<bool> &vist,
+stack<int> &st,int node)
+{
+    vist[node] = true;
+    
+    for(auto ele:adj[node])
+    {
+        if(!vist[ele])dfs(adj,vist,st,ele);
+    }
+    st.push(node);
+    return;
+}
+
+class Solution {
+  public:
+    // Function to return list containing vertices in Topological order.
+    vector<int> topologicalSort(vector<vector<int>>& adj) {
+        // Your code here
+        int n = adj.size();
+        vector<bool>vist(n,false);
+        
+        stack<int>st;
+        
+        for(int i=0;i<n;i++)
+        {
+            if(!vist[i])
+            {
+                dfs(adj,vist,st,i);
+            }
+        }
+        
+        
+        vector<int>ans;
+        
+        while(!st.empty())
+        {
+            ans.push_back(st.top());
+            st.pop();
+        }
+        
+        return ans;
+    }
+};
