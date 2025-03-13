@@ -1,0 +1,51 @@
+
+
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    bool isCyclic(vector<vector<int>> &adj) {
+        // code here
+        int n = adj.size();
+        
+        
+        vector<int>inDegree(n,0);
+        
+        for(int i=0;i<n;i++)
+        {
+            for(auto ele:adj[i])inDegree[ele] += 1;
+        }
+        
+        queue<int>q;
+        
+        for(int i=0;i<n;i++)
+        {
+            if(inDegree[i] == 0)
+            {
+                q.push(i);
+            }
+        }
+        
+        vector<int>nodes;
+        
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            
+            for(auto ele:adj[node])
+            {
+                inDegree[ele] -= 1;
+                if(inDegree[ele] == 0)q.push(ele);
+            }
+            
+            nodes.push_back(node);
+            
+        }
+        
+        // cout<<
+        
+        if(nodes.size() == n)return false; 
+        
+        return true;
+    }
+};
