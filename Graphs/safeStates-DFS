@@ -1,0 +1,45 @@
+
+bool dfs(vector<int> adj[],vector<bool> &vist,vector<bool> &pathVist,
+vector<int> &safe,int node)
+{
+    vist[node] = true;
+    pathVist[node] = true;
+    
+    for(auto ele:adj[node])
+    {
+        if(!vist[ele] && !pathVist[ele])
+        if(dfs(adj,vist,pathVist,safe,ele))return true;
+        
+        if(pathVist[ele])return true;
+    }
+    
+    safe[node] = 1;
+    pathVist[node] = false;
+    
+    return false;
+    
+}
+
+class Solution {
+  public:
+    vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        // code here
+        vector<int>ans;
+        
+        vector<bool>vist(V,false);
+        vector<bool>pathVist(V,false);
+        vector<int>safe(V,0);
+        
+        for(int i=0;i<V;i++)
+        {
+            if(!vist[i])dfs(adj,vist,pathVist,safe,i);
+        }
+        
+        for(int i=0;i<V;i++)
+        {
+            if(safe[i])ans.push_back(i);
+        }
+        
+        return ans;
+    }
+};
