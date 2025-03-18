@@ -1,0 +1,74 @@
+
+void dfs(vector<vector<pair<int,int>>> &adj,vector<int> &vist,
+stack<int> &st,int node)
+{
+    vist[node] = 1;
+    
+    for(auto ele:adj[node])
+    {
+        if(!vist[ele.first])
+        {
+            dfs(adj,vist,st,ele.first);
+        }
+    }
+    
+    st.push(node);
+    return;
+}
+
+// User function Template for C++
+class Solution {
+  public:
+    vector<int> shortestPath(int V, int E, vector<vector<int>>& edges) {
+        // code here
+        
+        vector<int>vist(V,0);
+        vector<vector<pair<int,int>>>adj(V);
+        
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+        }
+        
+        stack<int>st;
+        
+        for(int i=0;i<V;i++)
+        {
+            if(!vist[i])
+            {
+                dfs(adj,vist,st,i);
+            }
+        }
+        
+        vector<int>ans(V,INT_MAX);
+        
+        while(!st.empty() && st.top() != 0)
+        {
+            int ele = st.top();
+            st.pop();
+            ans[ele] = -1;
+        }
+        
+        ans[0] = 0;
+        
+        // st.pop();
+        
+        while(!st.empty())
+        {
+            int node = st.top();
+            st.pop();
+            
+            int dis = ans[node];
+            
+            for(auto ele:adj[node])
+            {
+                int curDis = ans[ele.first];
+                if(dis+ele.second<curDis)ans[ele.first] = dis + ele.second;
+            }
+            
+        }
+        
+        return ans;
+       
+    }
+};
