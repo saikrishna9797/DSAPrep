@@ -1,0 +1,41 @@
+
+class Solution {
+  public:
+    // Function to find the shortest path from source to all other nodes
+    vector<int> shortestPath(vector<vector<int>>& adj, int src) {
+        // code here
+        queue<pair<int,int>>q;
+        q.push({src,0});
+        vector<int>vist(adj.size(),0);
+        
+        vector<int>ans(adj.size(),INT_MAX);
+        
+        ans[src] = 0;
+        
+        while(!q.empty())
+        {
+            int node = q.front().first;
+            int dis = q.front().second;
+            vist[node] = 1;
+            q.pop();
+            
+            for(auto ele:adj[node])
+            {
+                int curDis = ans[ele];
+                
+                if(curDis> dis + 1)ans[ele] = dis + 1;
+                if(!vist[ele])
+                q.push({ele,ans[ele]});
+            }
+            
+            
+        }
+        
+        for(auto &ele:ans)
+        {
+            if(ele == INT_MAX)ele = -1;
+        }
+        
+        return ans;
+    }
+};
