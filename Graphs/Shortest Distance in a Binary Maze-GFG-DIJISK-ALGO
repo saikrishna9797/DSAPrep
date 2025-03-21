@@ -1,0 +1,53 @@
+
+// User function Template for C++
+
+class Solution {
+  public:
+    int shortestPath(vector<vector<int>> &grid, pair<int, int> source,
+                     pair<int, int> destination) {
+        // code here
+        int n = grid.size();
+        int m = grid[0].size();
+        queue<pair<int,pair<int,int>>>pq;
+        
+        vector<vector<int>>distances(n,vector<int>(m,INT_MAX));
+        
+        distances[source.first][source.second] = 0;
+        
+        pq.push({0,{source.first,source.second}});
+        
+        while(!pq.empty())
+        {
+            int r = pq.front().second.first;
+            int c = pq.front().second.second;
+            int dis = pq.front().first;
+            
+            // if()
+            pq.pop();
+            
+            int arr1[4] = {-1,0,1,0};
+            int arr2[4] = {0,1,0,-1};
+            
+            for(int i = 0;i<4;i++)
+            {
+                int nr = r + arr1[i];
+                int nc = c + arr2[i];
+                
+                if(nr>=0 && nc>=0 && nr<n && nc<m && grid[nr][nc] == 1 && 
+                    distances[nr][nc]>dis +1)
+                    {
+                        if(nr == destination.first && nc == destination.second)return dis + 1;
+                        pq.push({dis+1,{nr,nc}});
+                        distances[nr][nc] = dis + 1; 
+                    }
+            }
+        }
+        
+  
+        int ans = -1;
+        if(distances[destination.first][destination.second] != INT_MAX)
+        ans = distances[destination.first][destination.second];
+        
+        return ans;
+    }
+};
