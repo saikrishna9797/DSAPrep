@@ -1,0 +1,68 @@
+
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        // Code here
+        vector<int>parent(n+1,0);
+        vector<int>distances(n+1,INT_MAX);
+        distances[1] = 0;
+        
+        for(int i=0;i<n+1;i++)parent[i] = i;
+        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+        
+        pq.push({0,1});
+        
+        vector<vector<pair<int,int>>>adj(n+1);
+        
+        for(int i=0;i<m;i++)
+        {
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+        }
+        
+        
+        while(!pq.empty())
+        {
+            int node = pq.top().second;
+            int dis = pq.top().first;
+            pq.pop();
+            
+            for(auto ele:adj[node])
+            {
+                int Nnode = ele.first;
+                int NDis = ele.second;
+                
+                int curDis = distances[Nnode];
+                if(curDis>NDis + dis)
+                {
+                    distances[Nnode] = NDis + dis;
+                    pq.push({NDis + dis,Nnode});
+                    parent[Nnode] = node;
+                }
+            }
+            
+        }
+        
+        
+        
+        if(distances[n] == INT_MAX)return {-1};
+        
+        vector<int>ans;
+        int destination = n;
+        
+        while(parent[destination] != destination)
+        {
+            ans.push_back(destination);
+            destination = parent[destination];
+        }
+        
+        
+        
+        ans.push_back(1);
+        ans.push_back(distances[n]);
+        
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
