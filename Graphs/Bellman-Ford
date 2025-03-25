@@ -1,0 +1,47 @@
+
+// User function Template for C++
+// #include <climits>
+
+class Solution {
+  public:
+    /*  Function to implement Bellman Ford
+     *   edges: vector of vectors which represents the graph
+     *   src: source vertex
+     *   V: number of vertices
+     */
+    vector<int> bellmanFord(int V, vector<vector<int>>& edges, int src) {
+        // Code here
+        int siz = edges.size();
+        vector<int>distances(V,1e8);
+        
+        distances[src] = 0;
+        
+        for(int i=0;i<V-1;i++)
+        {
+            for(int j=0;j<siz;j++)
+            {
+                int dis = edges[j][2];
+                int parNode = edges[j][0];
+                int adjNode = edges[j][1];
+                
+                if(distances[parNode] != 1e8 && distances[parNode]+dis<distances[adjNode])
+                {
+                    distances[adjNode] = distances[parNode]+dis;
+                }
+            }
+        }
+        
+        for(int j=0;j<siz;j++)
+        {
+            int dis = edges[j][2];
+            int parNode = edges[j][0]; 
+            int adjNode = edges[j][1];
+            
+            if(distances[parNode] != 1e8 && distances[parNode]+dis<distances[adjNode])
+            {
+                return {-1};
+            }
+        }
+        return distances;
+    }
+};
