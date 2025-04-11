@@ -1,0 +1,84 @@
+
+//User function Template for C++
+
+class disjointSet
+{
+   
+    
+    public:
+         vector<int>parent;
+         vector<int>rank;
+        disjointSet(int V)
+        {
+            parent.resize(V+1);
+            rank.resize(V+1,0);
+            
+            for(int i= 0;i<=V;i++)parent[i] = i;
+        }
+        
+        int findPar(int node)
+        {
+            if(node == parent[node])return node;
+            return parent[node] = findPar(parent[node]);
+        }
+        
+        void unionByRank(int nodeX,int nodeY)
+        {
+            int ultimateParX = findPar(nodeX);
+            int  ultimateParY = findPar(nodeY);
+            
+            // ultimatePar
+            
+            if(ultimateParX == ultimateParY)return;
+            else if(rank[ultimateParX]>rank[ultimateParY])
+            {
+                parent[ultimateParY] = ultimateParX;
+            }
+            else if(rank[ultimateParX]<rank[ultimateParY])
+            {
+                parent[ultimateParX] = ultimateParY;
+            }
+            else
+            {
+                parent[ultimateParY] = ultimateParX;
+                rank[ultimateParX] += 1;
+            }
+            
+        }
+        
+    
+};
+
+class Solution {
+  public:
+    int numProvinces(vector<vector<int>> adj, int V) {
+        // code here
+        
+        // solved using disjoint set
+        
+        disjointSet ds(V);
+        
+        for(int i=0;i<V;i++)
+        {
+            for(int j = 0;j<V;j++){
+                if(adj[i][j] == 1)
+                {
+                    ds.unionByRank(i,j);
+                }
+            }
+        }
+       
+        
+        
+        int ans= 0;
+        
+        for(int i = 0;i<V;i++)
+        {
+            if(ds.findPar(i) == i)ans += 1;
+        }
+        
+        return ans;
+            
+        
+    }
+};
