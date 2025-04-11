@@ -1,0 +1,102 @@
+
+class disjointSet
+{
+    vector<int>parent;
+    vector<int>rank;
+    
+    public:
+        disjointSet(int V)
+        {
+            parent.resize(V+1,0);
+            rank.resize(V+1,0);
+            
+            for(int i=0;i<=V;i++)
+            {
+                parent[i] = i;
+            }
+        }
+        
+        int findPar(int node)
+        {
+            if(node == parent[node])return node;
+            
+            return parent[node] = findPar(parent[node]);
+        }
+        
+        void  unionByRank(int nodeX,int nodeY)
+        {
+            int ultimateParX = parent[nodeX];
+            int ultimateParY = parent[nodeY];
+            if(ultimateParX == ultimateParY)
+            {
+                return;
+            }
+            else if(rank[ultimateParX]<rank[ultimateParY])
+            {
+                parent[ultimateParX] = ultimateParY;
+            }
+            else if(rank[ultimateParX]>rank[ultimateParY])
+            {
+                parent[ultimateParY] = ultimateParX;
+            }
+            else
+            {
+                parent[ultimateParX] = ultimateParY;
+                rank[ultimateParY] += 1;
+            }
+        }
+};
+
+
+class Solution {
+  public:
+    // Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[]) {
+        // code here
+        //now iam  using  disjoint set  to solve this problm
+        
+        // firstly sort thee node s with the edgee weights
+        
+        // int V = 
+        vector<pair<int,pair<int,int>>>edges(V);
+        
+        for(int i=0;i<V;i++)
+        {
+            
+            for(auto it:adj[i])
+            {
+                int wt = it[1];
+                int par = i;
+                int child = it[0];
+                
+                edges.push_back({wt,{par,child}});
+            }
+            
+            
+        }
+        
+       
+        
+        disjointSet ds(V);
+        sort(edges.begin(),edges.end());
+        
+        int ans = 0;
+        
+        for(auto it:edges)
+        {
+            int  wt = it.first;
+            int par = it.second.first;
+            int child = it.second.second;
+            
+            if(ds.findPar(par) == ds.findPar(child))continue;
+            else
+            {
+                ans += wt;
+                ds.unionByRank(par,child);
+            }
+        }
+        
+        return ans;
+        
+    }
+};
