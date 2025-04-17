@@ -1,0 +1,134 @@
+
+// User function Template for C++
+
+class disjointSet
+{
+    public:
+        vector<int>parent;
+            vector<int>Size;
+        
+        disjointSet(int siz)
+        {
+            parent.resize(siz);
+            Size.resize(siz,1);
+            
+            for(int i=0;i<siz;i++)
+            {
+                parent[i] = i;
+            }
+        }
+        
+        int findUParent(int node)
+        {
+            if(node == parent[node])return node;
+            return parent[node] = findUParent(parent[node]);
+        }
+        
+        void unionBySize(int node1,int node2)
+        {
+            int uParentNode1 = findUParent(node1);
+            int uParentNode2 = findUParent(node2);
+            
+            if(uParentNode1 == uParentNode2)return;
+            else if(Size[uParentNode1]>Size[uParentNode2])
+            {
+                parent[uParentNode2] = uParentNode1;
+                Size[uParentNode1] += Size[uParentNode2];
+            }
+            else if(Size[uParentNode1]<Size[uParentNode2])
+            {
+                parent[uParentNode1] = uParentNode2;
+                Size[uParentNode2] += Size[uParentNode1];
+            }
+            else
+            {
+                parent[uParentNode1] = uParentNode2;
+                Size[uParentNode2] += Size[uParentNode1];
+            }
+            
+        }
+        
+};
+
+
+class Solution {
+  public:
+    int MaxConnection(vector<vector<int>>& grid) {
+        // code here
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        disjointSet ds(rows*cols);
+        
+        for(int i=0;i<rows;i++)
+        {
+            for(int j = 0;j<cols;j++)
+            {
+                if(grid[i][j] == 1)
+                {
+                    int arr1[4] = {-1,0,1,0};
+                    int arr2[4] = {0,1,0,-1};
+                    
+                    for(int k = 0;k<4;k++)
+                    {
+                        int nr = i + arr1[k];
+                        int nc = j + arr2[k];
+                        
+                        if(nr>=0 && nc>=0 && nr<rows && nc<cols &&
+                        grid[nr][nc] == 1)
+                        {
+                            int node1 = i*cols + j;
+                            int node2 = nr*cols + nc;
+                            ds.unionBySize(node1,node2);
+                        }
+                    }
+                }
+            }
+        }
+        
+        int ans = 0;
+        
+        for(int  i =0;i<rows;i++)
+        {
+            for(int j = 0;j<cols;j++)
+            {
+                if(grid[i][j] == 0)
+                {
+                    set<int>par;
+                    int arr1[4] = {-1,0,1,0};
+                    int arr2[4] = {0,1,0,-1};
+                    
+                    for(int k = 0;k<4;k++)
+                    {
+                        int nr = i + arr1[k];
+                        int nc = j + arr2[k];
+                        
+                        if(nr>=0 && nc>=0 && nr<rows && nc<cols &&
+                        grid[nr][nc] == 1)
+                        {
+                            int node = cols*nr + nc;
+                            par.insert(ds.findUParent(node));
+                        }
+                    }
+                    
+                    int siz = 0;
+                    for(auto ele:par)
+                    {
+                        siz += ds.Size[ele];
+                    }
+                    
+                    ans = max(ans,siz+1);
+                    
+                }
+            }
+        }
+        
+        for(int i =0;i<rows*cols;i++)
+        {
+            ans = max(ans,ds.Size[ds.findUParent(i)]);
+        }
+        
+        return ans;
+    }
+};
