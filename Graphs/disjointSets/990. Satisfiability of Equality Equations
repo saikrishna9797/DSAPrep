@@ -1,0 +1,91 @@
+class disjointSet
+{
+    public:
+
+        vector<int>siz;
+        vector<int>parent;
+
+        disjointSet()
+        {
+            
+            parent.resize(26);
+            for(int  i = 0;i<26;i++)parent[i] = i;
+
+            siz.resize(26,1);
+        }
+
+        int findUltimatePar(int node)
+        {
+            if(parent[node] == node)return node;
+            return parent[node] = findUltimatePar(parent[node]);
+        }
+
+        void unionBySize(int node1,int node2)
+        {
+            int uParNode1 = findUltimatePar(node1);
+            int uParNode2 = findUltimatePar(node2);
+
+            if(uParNode1 == uParNode2)return;
+
+            if(siz[uParNode1]>siz[uParNode2])
+            {
+                parent[uParNode2] = uParNode1;
+                siz[uParNode1] += siz[uParNode2];
+            }
+            else if(siz[uParNode1]<siz[uParNode2])
+            {
+                parent[uParNode1] = uParNode2;
+                siz[uParNode2] += siz[uParNode1];
+            }
+            else
+            {
+                parent[uParNode1] = uParNode2;
+                siz[uParNode2] += siz[uParNode1];
+            } 
+        }
+};
+
+
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+        vector<vector<int>>adj(26);
+
+        disjointSet ds;
+
+        for(int  i = 0;i<equations.size();i++)
+        {
+            int node1 = equations[i][0]-'a';
+            int node2 = equations[i][3]-'a';
+            cout<<node1<<" "<<node2<<endl;
+        }
+
+        for(int  i = 0;i<equations.size();i++)
+        {
+            int node1 = equations[i][0]-'a';
+            int node2 = equations[i][3]-'a';
+
+            if(node1 == node2 && equations[i][1] == '!')return false;
+
+            if(equations[i][1] == '=')
+            ds.unionBySize(node1,node2);
+
+        }
+
+        for(int i = 0;i<equations.size();i++)
+        {
+            int node1 = equations[i][0]-'a';
+            int node2 = equations[i][3]-'a';
+            if(equations[i][1] == '!')
+            {
+                int uParentNode1 = ds.findUltimatePar(node1);
+                int uParentNode2 = ds.findUltimatePar(node2);
+
+                if(uParentNode1 == uParentNode2)return false;
+            }
+        }
+
+        return true;
+
+    }
+};
