@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void dfsTraversal(vector<vector<int>>& graph,int source,int target,
+    vector<int> &temp,vector<vector<int>>& result)
+    {
+        if(source == target)
+        {
+            result.push_back(temp);
+            return;
+        }
+        for(auto ele:graph[source])
+        {
+            temp.push_back(ele);
+            dfsTraversal(graph,ele,target,temp,result);
+            temp.pop_back();
+        }
+        
+        return;
+    }
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector<vector<int>>result;
+        int target = graph.size()-1,source = 0;
+        vector<int>temp;
+        temp.push_back(source);
+        dfsTraversal(graph,source,target,temp,result);
+
+        return result;
+    }
+};
