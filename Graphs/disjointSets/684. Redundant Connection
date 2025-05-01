@@ -1,0 +1,84 @@
+class disjointSet
+{
+    public:
+        vector<int>size;
+        vector<int>parent;
+
+        disjointSet(int n)
+        {
+            size.resize(n,1);
+            parent.resize(n);
+
+            for(int i=0;i<n;i++)parent[i] = i;
+        }
+
+        int findUParent(int node)
+        {
+            if(node == parent[node])return node;
+            return parent[node] = findUParent(parent[node]);
+        }
+
+        void unionBySize(int node1,int node2)
+        {
+            int uParentNode1 = findUParent(node1);
+            int uParentNode2 = findUParent(node2);
+
+            if(uParentNode1 == uParentNode2)return;
+
+            if(size[node1]>size[node2])
+            {
+                parent[uParentNode2] = uParentNode1;
+                size[node1] += size[node2];
+            }
+            else if(size[node1]<=size[node2])
+            {
+                parent[uParentNode1] = uParentNode2;
+                size[uParentNode2] += size[uParentNode1];
+            }
+
+            return;
+
+        }
+
+};
+
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        
+        int n = edges.size();
+
+        vector<vector<int>>adj(n+1);
+
+        for(int i=0;i<n;i++)
+        {
+            adj[edges[i][0]].push_back(edges[i][1]);
+            adj[edges[i][1]].push_back(edges[i][0]);
+        }
+
+        disjointSet ds(n+1);
+        vector<int>ans;
+
+        for(int i=0;i<n;i++)
+        {
+            int node1 = edges[i][0];
+            int node2 = edges[i][1];
+            int par1 = ds.findUParent(node1);
+            int par2 = ds.findUParent(node2);
+            if( par1!= par2)
+            {
+                ds.unionBySize(node1,node2);
+            }
+            else
+            {
+                ans.push_back(node1);
+                ans.push_back(node2);
+                break;
+            }
+        }
+
+        return ans;
+
+    }
+};
