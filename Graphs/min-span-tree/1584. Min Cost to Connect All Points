@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        vector<vector<pair<int,int>>>adj(n);
+
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i!=j)
+                {
+                    int val = abs(points[i][0]-points[j][0]) + 
+                                abs(points[i][1]-points[j][1]);
+                    adj[i].push_back({j,val});
+                }
+            }
+        }
+
+        int ans = 0;
+
+        // for(int i=0;i<n;i++)
+        // {
+        //     for(int j=0;j<adj[i].size();j++)
+        //     {
+        //         cout<<i<<"->"<<adj[i][j].first<<" "<<adj[i][j].second<<endl;
+        //     }
+        // }
+
+        vector<int>vist(n,0);
+
+        priority_queue<pair<int,int>,vector<pair<int,int>>,
+        greater<pair<int,int>>>pq;
+
+        pq.push({0,0});
+
+        while(!pq.empty())
+        {
+            int node = pq.top().second;
+            int dis = pq.top().first;
+            pq.pop();
+
+            if(vist[node])continue;
+            ans += dis;
+            vist[node] = 1;
+
+            for(auto ele:adj[node])
+            {
+                if(!vist[ele.first])
+                {
+                    pq.push({ele.second,ele.first});
+                }
+            }
+        }
+
+        return ans;
+    }
+};
