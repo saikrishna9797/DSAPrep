@@ -1,0 +1,115 @@
+
+class disjointSet
+{
+    public:
+
+        vector<int>size;
+        vector<int>parent;
+
+        disjointSet(int n)
+        {
+            parent.resize(n);
+            size.resize(n,1);
+
+            for(int i=0;i<n;i++)parent[i] = i;
+        }
+
+        int findUParent(int node)
+        {
+            if(parent[node] == node)return node;
+            return parent[node] = findUParent(parent[node]);
+        }
+
+        void unionBySize(int node1,int node2)
+        {
+            int uParentNode1 = findUParent(node1);
+            int uParentNode2 = findUParent(node2);
+
+            if(uParentNode1 == uParentNode2)
+            {
+                return;
+            }
+
+            if(size[uParentNode1]>size[uParentNode2])
+            {
+                parent[uParentNode2] = uParentNode1;
+                size[uParentNode1] += size[uParentNode2];
+            }
+            else if(size[uParentNode1]<=size[uParentNode2])
+            {
+                parent[uParentNode1] = uParentNode2;
+                size[uParentNode2] += size[uParentNode1];
+            }
+
+            return;
+
+        }
+};
+
+class Solution {
+public:
+
+    void dfsTraversal(int node,vector<vector<int>> &adj,vector<int> &vistForComps)
+    {
+        vistForComps[node] = 1;
+        for(auto ele:adj[node])
+        {
+            if(!vistForComps[ele])
+            dfsTraversal(ele,adj,vistForComps);
+        }
+
+        return;
+    }
+
+
+    int makeConnected(int n, vector<vector<int>>& connections) {
+        // first find the number of components
+
+        int comps = 0;
+
+        vector<vector<int>>adj(n);
+
+        for(int i=0;i<connections.size();i++)
+        {
+            adj[connections[i][0]].push_back(connections[i][1]);
+            adj[connections[i][1]].push_back(connections[i][0]);
+        }
+
+        vector<int>vistForComps(n,0);
+
+        for(int i=0;i<n;i++)
+        {
+            if(!vistForComps[i])
+            {
+                comps += 1;
+                vistForComps[i] = 1;
+                dfsTraversal(i,adj,vistForComps);
+            }
+        }
+
+        //find the extra connections using union find
+
+        disjointSet ds(n);
+
+        int extraConnections = 0;
+
+        for(int i=0;i<connections.size();i++)
+        {
+            int uParentNode1 = ds.findUParent(connections[i][0]);
+            int uParentNode2 = ds.findUParent(connections[i][1]);
+
+            if(uParentNode1 == uParentNode2)
+            {
+                extraConnections += 1;
+            }
+            else
+            {
+                ds.unionBySize(connections[i][0],connections[i][1]);
+            }
+        }
+
+        cout<<extraConnections<<" "<<comps;
+        if(extraConnections<comps-1)return -1;
+        return comps-1;
+    }
+};
