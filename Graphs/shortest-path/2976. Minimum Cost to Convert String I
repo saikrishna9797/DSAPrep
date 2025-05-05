@@ -1,0 +1,75 @@
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        vector<vector<pair<int,int>>>adj(26);
+
+        for(int i=0;i<original.size();i++)
+        {
+            adj[original[i]-'a'].push_back({changed[i]-'a',cost[i]});
+        }
+
+        long long ans = 0;
+
+        vector<vector<long long>>mat;
+
+        for(int i=0;i<26;i++)
+        {
+            // if(source[i] == target[i])continue;
+            vector<long long>distances(26,INT_MAX);
+            for(int j = 0;j<26;j++)
+            {
+
+                
+
+                int s = i;
+                int d = j;
+                distances[s] = 0;
+
+                priority_queue<pair<long long,int>,
+                vector<pair<long long,int>>,
+                greater<pair<long long,int>>>pq;
+
+                pq.push({0,s});
+
+                while(!pq.empty())
+                {
+                    int node = pq.top().second;
+                    int dis = pq.top().first;
+                    pq.pop();
+
+                    for(auto ele:adj[node])
+                    {
+                        if(distances[ele.first]>dis+ele.second)
+                        {
+                            pq.push({dis+ele.second,ele.first});
+                            distances[ele.first] = dis + ele.second;
+                        }
+                    }
+                }
+
+                // if(distances[d] == INT_MAX)return -1;
+
+            }
+
+            mat.push_back(distances);
+
+        }
+
+        
+
+        for(int i=0;i<source.size();i++)
+        {
+            if(source[i] == target[i])continue;
+            int s = source[i]-'a';
+            int d = target[i]-'a';
+
+            if(mat[s][d] == INT_MAX)return -1;
+
+            ans += mat[s][d];
+
+        }
+
+        return ans;
+
+    }
+};
