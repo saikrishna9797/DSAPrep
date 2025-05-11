@@ -1,0 +1,60 @@
+class Solution {
+public:
+    vector<int> minimumTime(int n, vector<vector<int>>& edges, vector<int>& disappear) {
+        vector<int>distances(n,INT_MAX);
+
+        vector<vector<pair<int,int>>>adj(n);
+
+        for(int i=0;i<edges.size();i++)
+        {
+            adj[edges[i][0]].push_back({edges[i][1],edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0],edges[i][2]});
+        }
+
+        distances[0] = 0;
+
+        priority_queue<pair<int,int>,
+        vector<pair<int,int>>,
+        greater<pair<int,int>>>pq;
+
+        pq.push({0,0});
+
+        while(!pq.empty())
+        {
+            int node = pq.top().second;
+            int dis = pq.top().first;
+            pq.pop();
+
+            //very very import step and can be used 
+            // in every problem
+            // this is known as lazy evaluation
+
+            if(dis>distances[node])continue;
+
+            for(auto ele:adj[node])
+            {
+                int nextNode = ele.first;
+                int weight = ele.second;
+                int newDist = dis + weight;
+                
+                if (newDist < disappear[nextNode] && newDist < distances[nextNode])
+                {
+                    pq.push({dis+ele.second,ele.first});
+                    distances[ele.first] = dis+ele.second;
+                }
+            }
+
+        }
+
+       for(int i=0;i<n;i++)
+       {
+            if(distances[i] >=disappear[i])
+            {
+                distances[i] = -1;
+            }
+       }
+
+        return distances;
+
+    }
+};
