@@ -27,3 +27,17 @@ case
     else 'Leaf'
 end as type
 from Tree;
+
+( or )
+❌
+The NOT IN clause can fail when the subquery returns even one NULL value. This is a well-known SQL quirk.
+
+# Write your MySQL query statement below
+
+select id,
+case
+    when p_id is null then 'Root'
+    when id not in (select p_id from Tree where p_id is not null) then 'Leaf'
+    else 'Inner'
+end as type
+from Tree;
