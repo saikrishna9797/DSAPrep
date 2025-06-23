@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int maxAbsoluteSum(vector<int>& nums) {
+        // lets try kadanes algo for max sum
+
+        int mxSum = 0;
+        int curSum = 0;
+        int i = 0;
+        while(i<nums.size())
+        {
+            curSum += nums[i];
+            mxSum = max(curSum,mxSum);
+
+            if(curSum < 0)curSum = 0;
+            
+            i += 1;
+        }
+
+        int mnSum = INT_MAX;
+        curSum = 0;
+
+        i=0;
+
+        while(i<nums.size())
+        {
+            curSum += nums[i];
+            mnSum = min(mnSum,curSum);
+
+            if(curSum>=0)curSum = 0;
+
+            i += 1;
+        }
+
+        // cout<<mnSum<<" "<<mxSum<<endl;
+
+        mnSum = abs(mnSum);
+
+        int ans = max(mnSum,mxSum);
+        return ans;
+    }
+};
