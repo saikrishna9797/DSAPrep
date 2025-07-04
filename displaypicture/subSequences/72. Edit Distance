@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int solve(string word1,string word2,int indx1,int indx2,vector<vector<int>> &dp)
+    {
+        if(indx1 == 0)return indx2;
+        if(indx2 == 0)return indx1;
+
+        if(dp[indx1][indx2] != -1)return dp[indx1][indx2];
+        if(word1[indx1-1] == word2[indx2-1])
+        {
+            return dp[indx1][indx2] = solve(word1,word2,indx1-1,indx2-1,dp);
+        }
+
+        return dp[indx1][indx2] = 1 + min(
+            solve(word1,word2,indx1-1,indx2,dp),
+            min(
+                solve(word1,word2,indx1,indx2-1,dp),
+                solve(word1,word2,indx1-1,indx2-1,dp)
+            )
+        );
+    }
+    int minDistance(string word1, string word2) {
+        int l1 = word1.size() , l2 = word2.size();
+        vector<vector<int>>dp(l1+1,vector<int>(l2+1,-1));
+        return solve(word1,word2,l1,l2,dp);
+        
+    }
+};
