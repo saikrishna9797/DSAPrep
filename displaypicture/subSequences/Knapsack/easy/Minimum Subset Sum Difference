@@ -1,0 +1,51 @@
+class Solution {
+
+  public:
+    bool solve(vector<int> &arr,int indx,int sum,vector<vector<int>> &dp)
+    {
+        if(sum == 0)return dp[indx][sum] = true;
+        
+        if(indx == arr.size())return dp[indx][sum] = false;
+        
+        if(dp[indx][sum] != -1)return dp[indx][sum];
+        
+        if(sum>=arr[indx])
+        {
+            return dp[indx][sum] = 
+            (solve(arr,indx+1,sum-arr[indx],dp) || solve(arr,indx+1,sum,dp));
+        }
+        
+        return dp[indx][sum] = solve(arr,indx+1,sum,dp);
+    }
+    int minDifference(vector<int>& arr) {
+        // Your code goes here
+        int n = arr.size();
+        
+        int sum = 0;
+        
+        for(auto ele:arr)sum += ele;
+        
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        
+        for(int i=0;i<=sum;i++)
+        solve(arr,0,i,dp);
+        
+        // for(int i=0;i<=n;i++)
+        // {
+        //     for(int j=0;j<sum;j++)cout<<dp[i][j]<<" ";
+        //     cout<<endl;
+        // }
+        
+        int ans = INT_MAX;
+        
+        for(int i=0;i<=sum;i++)
+        {
+            if(dp[0][i] == 1)
+            {
+                ans = min(ans,abs(i-(sum-i)));
+            }
+        }
+        
+        return ans;
+    }
+};
